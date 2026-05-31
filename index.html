@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth bg-[#faf9f6]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mẫn Mint - Premium Japanese Durian Crepe Store</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS v4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <!-- GSAP Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --color-light-bg: #faf9f6; /* Nền kem mịn cao cấp */
+            --color-mint: #d8f3e5; 
+            --color-mint-dark: #1e533e;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--color-light-bg);
+            color: #2d3748;
+            overflow-x: hidden;
+        }
+        .font-heading { font-family: 'Syne', sans-serif; }
+        
+        /* Glassmorphism mềm mại phong cách iOS */
+        .apple-glass {
+            background: rgba(250, 249, 246, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(30, 83, 62, 0.06);
+        }
+
+        /* Nền dải lụa màu neon mờ lấp đầy không gian trống phía sau */
+        .cinematic-glow {
+            background: radial-gradient(circle at 20% 30%, rgba(216, 243, 229, 0.7) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(24df, 235, 185, 0.4) 0%, transparent 60%);
+        }
+
+        .light-particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(30, 83, 62, 0.15) 100%, transparent 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-particle 16s infinite linear;
+        }
+        @keyframes float-particle {
+            0% { transform: translateY(100vh) scale(0.3); opacity: 0; }
+            40% { opacity: 0.5; }
+            80% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(0.7); opacity: 0; }
+        }
+
+        /* Nút Luxury có vệt sáng quét qua mượt mà */
+        .btn-luxury {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-luxury::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.6s;
+        }
+        .btn-luxury:hover::before { left: 100%; }
+    </style>
+</head>
+<body class="antialiased select-none pt-28">
+
+    <!-- HIỆU ỨNG NỀN ĐỔ MÀU SÁNG MƯỚT (XỬ LÝ TRỐNG WEB) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute inset-0 cinematic-glow scale-110"></div>
+        <div class="light-particle w-3 h-3" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="light-particle w-4 h-4" style="left: 80%; animation-delay: 4s;"></div>
+    </div>
+
+    <!-- HEADER ĐIỀU HƯỚNG BO CONG NHẸ THANH LỊCH -->
+    <header class="apple-glass fixed top-0 left-0 z-50 w-full px-6 py-4 md:px-12 transition-all duration-300">
+        <div class="mx-auto flex max-w-7xl items-center justify-between">
+            <a href="#" class="font-heading text-xl tracking-[0.15em] text-stone-800 font-extrabold hover:opacity-80 transition-opacity">
+                MẪN MINT <span class="text-[#1e533e] text-sm">🌿</span>
+            </a>
+            
+            <!-- Thanh tìm kiếm bo góc đầy đặn -->
+            <div class="hidden md:flex items-center bg-stone-200/50 px-4 py-2 w-80 rounded-full border border-stone-300/20 focus-within:border-[#1e533e]/30 focus-within:bg-white transition-all">
+                <svg class="w-4 h-4 text-stone-400 mr-2" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" placeholder="Tìm kiếm crepe sầu riêng thượng hạng..." class="bg-transparent text-xs text-stone-700 outline-none w-full font-light">
+            </div>
+
+            <!-- Khu vực Giỏ hàng -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleCart()" class="relative p-2.5 bg-white text-stone-700 hover:text-[#1e533e] rounded-full shadow-xs border border-stone-200/50 hover:shadow-md transition-all focus:outline-none cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-gradient-to-r from-[#1e533e] to-[#2d6a54] text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-sm">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN STORE FRONT CONTAINER -->
+    <main class="mx-auto max-w-7xl px-6 md:px-12 py-6 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- BÊN TRÁI: DANH MỤC VÀ BỘ LỌC (BO GÓC TRÒN MỀM MẠI) -->
+        <aside class="lg:col-span-3 space-y-6 self-start lg:sticky lg:top-28">
+            <div class="border border-stone-200/60 bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <h2 class="font-heading text-xs tracking-widest font-bold uppercase text-stone-400 mb-4 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-[#1e533e] rounded-full"></span> Danh Mục Bánh
+                </h2>
+                <div class="flex flex-col space-y-1.5 text-xs text-stone-600 font-medium">
+                    <button class="text-left py-2.5 px-4 bg-gradient-to-r from-[#d8f3e5] to-[#edfbf4] text-[#1e533e] font-bold rounded-xl transition-all">Tất Cả Sản Phẩm</button>
+                    <button class="text-left py-2.5 px-4 hover:bg-stone-50 hover:text-[#1e533e] rounded-xl transition-all pl-6">Crepe Truyền Thống</button>
+                    <button class="text-left py-2.5 px-4 hover:bg-stone-50 hover:text-[#1e533e] rounded-xl transition-all pl-6">Crepe Cuộn Phá Cách</button>
+                    <button class="text-left py-2.5 px-4 hover:bg-stone-50 hover:text-[#1e533e] rounded-xl transition-all pl-6">Premium Gift Box</button>
+                </div>
+            </div>
+
+            <div class="border border-stone-200/60 bg-white p-6 rounded-2xl shadow-sm hidden lg:block">
+                <h2 class="font-heading text-xs tracking-widest font-bold uppercase text-stone-400 mb-3 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-amber-400 rounded-full"></span> Cam Kết Mẫn Mint
+                </h2>
+                <ul class="text-[11px] text-stone-500 space-y-3 font-light">
+                    <li class="flex items-center gap-2.5 bg-stone-50 p-2 rounded-xl">
+                        <span class="text-base">⚡</span> <span>Giao hoả tốc trong <b>2 giờ</b></span>
+                    </li>
+                    <li class="flex items-center gap-2.5 bg-stone-50 p-2 rounded-xl">
+                        <span class="text-base">📦</span> <span>Hộp lạnh giữ nhiệt chuyên dụng</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- BÊN PHẢI: LƯỚI SẢN PHẨM RỘNG HƠN - BO TRÒN TOÀN DIỆN -->
+        <section class="lg:col-span-9">
+            <!-- Thanh sắp xếp -->
+            <div class="flex items-center justify-between border-b border-stone-200/80 pb-4 mb-6">
+                <div class="text-xs text-stone-400 font-light">Hiển thị <span class="font-bold text-stone-700">4</span> tuyệt tác nghệ thuật sầu riêng</div>
+                <select class="bg-white border border-stone-200 text-stone-600 px-4 py-2 rounded-full text-xs focus:outline-none focus:border-[#1e533e] shadow-xs">
+                    <option>Sắp xếp: Mới nhất</option>
+                    <option>Giá tăng dần</option>
+                    <option>Giá giảm dần</option>
+                </select>
+            </div>
+
+            <!-- DANH SÁCH LƯỚI CARD SẢN PHẨM BO TRÒN SANG TRỌNG -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="product-card border border-stone-200/60 bg-white p-4 rounded-2xl shadow-xs transition-all duration-400 hover:border-[#1e533e]/30 hover:shadow-xl flex flex-col justify-between group" data-id="1">
+                    <div>
+                        <!-- Container ảnh bo góc tròn sâu -->
+                        <div class="overflow-hidden aspect-square mb-4 relative bg-stone-50 rounded-xl shadow-inner">
+                            <img src="https://matbachhoa.vn/wp-content/uploads/2023/12/banh-crepe-sau-rieng-847.jpg" alt="Classic Crepe" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <h3 class="font-heading text-sm text-stone-800 font-bold mb-1.5 group-hover:text-[#1e533e] transition-colors">Bánh Gối Mẫn Mint (Hộp 6 chiếc)</h3>
+                        <p class="text-[11px] text-stone-400 font-light leading-relaxed mb-3">Vỏ crepe lụa truyền thống xếp gối vuông vắn ôm trọn lớp kem béo tươi mát.</p>
+                    </div>
+                    <div>
+                        <div class="text-base text-[#1e533e] font-extrabold mb-3">89.000đ</div>
+                        <button onclick="addToCart(1)" class="btn-luxury w-full bg-gradient-to-r from-[#1e533e] to-[#2d6a54] text-white font-semibold text-[11px] tracking-widest uppercase py-3 rounded-xl flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md cursor-pointer">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                            THÊM VÀO GIỎ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="product-card border border-stone-200/60 bg-white p-4 rounded-2xl shadow-xs transition-all duration-400 hover:border-[#1e533e]/30 hover:shadow-xl flex flex-col justify-between group" data-id="2">
+                    <div>
+                        <div class="overflow-hidden aspect-square mb-4 relative bg-stone-50 rounded-xl shadow-inner">
+                            <img src="https://storage.googleapis.com/onelife-public/blog.onelife.vn/2021/10/cach-lam-banh-crepe-la-dua-nhan-kem-sau-rieng-banh-banh-ngot-641993100894.jpg" alt="Pandan Crepe" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <h3 class="font-heading text-sm text-stone-800 font-bold mb-1.5 group-hover:text-[#1e533e] transition-colors">Crepe Cuộn Lá Dứa Thanh Mát</h3>
+                        <p class="text-[11px] text-stone-400 font-light leading-relaxed mb-3">Cốt lá dứa tươi hữu cơ thơm lừng mát mắt, cuộn sầu riêng xé sợi dai mịn.</p>
+                    </div>
+                    <div>
+                        <div class="text-base text-[#1e533e] font-extrabold mb-3">139.000đ</div>
+                        <button onclick="addToCart(2)" class="btn-luxury w-full bg-gradient-to-r from-[#1e533e] to-[#2d6a54] text-white font-semibold text-[11px] tracking-widest uppercase py-3 rounded-xl flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md cursor-pointer">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                            THÊM VÀO GIỎ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="product-card border border-stone-200/60 bg-white p-4 rounded-2xl shadow-xs transition-all duration-400 hover:border-[#1e533e]/30 hover:shadow-xl flex flex-col justify-between group" data-id="3">
+                    <div>
+                        <div class="overflow-hidden aspect-square mb-4 relative bg-stone-50 rounded-xl shadow-inner">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnq1VTKJfoeAx3VDpJP-ny7YWTRjPovOSDPA&s" alt="Lava Crepe" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <h3 class="font-heading text-sm text-stone-800 font-bold mb-1.5 group-hover:text-[#1e533e] transition-colors">Sầu Riêng Tan Chảy Khổng Lồ</h3>
+                        <p class="text-[11px] text-stone-400 font-light leading-relaxed mb-3">Góc cắt bùng nổ đầy ngập ngụa nguyên chất của thớ sầu riêng chín cây thượng hạng.</p>
+                    </div>
+                    <div>
+                        <div class="text-base text-[#1e533e] font-extrabold mb-3">259.000đ</div>
+                        <button onclick="addToCart(3)" class="btn-luxury w-full bg-gradient-to-r from-[#1e533e] to-[#2d6a54] text-white font-semibold text-[11px] tracking-widest uppercase py-3 rounded-xl flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md cursor-pointer">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                            THÊM VÀO GIỎ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="product-card border border-stone-200/60 bg-white p-4 rounded-2xl shadow-xs transition-all duration-400 hover:border-[#1e533e]/30 hover:shadow-xl flex flex-col justify-between group" data-id="4">
+                    <div>
+                        <div class="overflow-hidden aspect-square mb-4 relative bg-stone-50 rounded-xl shadow-inner">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAbPb0IBs3ArC-RKinpDVfoLFvUYPG1cC_pw&s" alt="Premium Gift Box" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <h3 class="font-heading text-sm text-stone-800 font-bold mb-1.5 group-hover:text-[#1e533e] transition-colors">Hộp Quà Thượng Hạng Mẫn Mint</h3>
+                        <p class="text-[11px] text-stone-400 font-light leading-relaxed mb-3">Set quà tặng đóng gói hộp sang trọng tinh tế kèm thiệp viết tay theo yêu cầu.</p>
+                    </div>
+                    <div>
+                        <div class="text-base text-[#1e533e] font-extrabold mb-3">450.000đ</div>
+                        <button onclick="addToCart(4)" class="btn-luxury w-full bg-gradient-to-r from-[#1e533e] to-[#2d6a54] text-white font-semibold text-[11px] tracking-widest uppercase py-3 rounded-xl flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md cursor-pointer">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                            THÊM VÀO GIỎ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- DRAWER GIỎ HÀNG BO TRÒN VIỀN GÓC TRÁI -->
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 z-50 w-full sm:w-[420px] bg-white shadow-2xl rounded-l-3xl border-l border-stone-200/40 translate-x-full transition-transform duration-500 ease-out flex flex-col justify-between">
+        <!-- Tiêu đề -->
+        <div class="p-6 border-b border-stone-100 flex items-center justify-between">
+            <div class="font-heading text-sm text-stone-800 font-bold flex items-center gap-2">
+                GIỎ HÀNG CỦA BẠN <span class="text-[10px] text-stone-400 font-light normal-case">(Làm mới theo giờ)</span>
+            </div>
+            <button onclick="toggleCart()" class="p-2 bg-stone-100 hover:bg-stone-200/70 rounded-full text-stone-700 transition-colors focus:outline-none cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+
+        <!-- Danh sách sản phẩm được thêm -->
+        <div id="cart-items" class="p-6 overflow-y-auto flex-1 space-y-4">
+            <div id="cart-empty-msg" class="text-center py-16 text-stone-400 text-xs font-light">Giỏ hàng đang trống rỗng.<br>Hãy chọn những tuyệt tác bánh sầu riêng phía bên ngoài nhé!</div>
+        </div>
+
+        <!-- Checkout Section -->
+        <div class="p-6 border-t border-stone-100 bg-[#faf9f6] rounded-bl-3xl space-y-4 shadow-inner">
+            <div class="flex items-center justify-between text-xs font-bold text-stone-800">
+                <span>TỔNG CỘNG ĐƠN HÀNG:</span>
+                <span id="cart-total-price" class="text-[#1e533e] text-base font-extrabold">0đ</span>
+            </div>
+            
+            <!-- Form nhập thông tin bo góc mượt -->
+            <div class="space-y-2 pt-1">
+                <input type="text" id="customer-name" placeholder="Tên người nhận bánh..." class="w-full bg-white border border-stone-200 px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-[#1e533e] shadow-xs">
+                <input type="tel" id="customer-phone" placeholder="Số điện thoại nhận hàng..." class="w-full bg-white border border-stone-200 px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-[#1e533e] shadow-xs">
+            </div>
+
+            <button onclick="checkoutOrder()" class="btn-luxury w-full bg-gradient-to-r from-[#1e533e] to-[#2d6a54] text-white text-xs font-bold tracking-widest uppercase py-3.5 rounded-xl flex items-center justify-center gap-2 shadow-md hover:shadow-lg cursor-pointer">
+                GỬI ĐƠN GIAO HOẢ TỐC 
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- BACKGROUND OVERLAY -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-stone-900/20 backdrop-blur-xs z-40 hidden opacity-0 transition-opacity duration-500"></div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-stone-200/60 bg-white py-12 text-center text-[10px] tracking-widest text-stone-400 uppercase relative z-10 mt-20">
+        <p class="text-stone-500 max-w-sm mx-auto tracking-normal text-xs font-light normal-case mb-2">Hotline cửa hàng tư vấn: 1900 xxxx (08:00 - 21:30)</p>
+        <p class="text-[8px] text-stone-400 tracking-wider font-light">&copy; 2026 Mẫn Mint Crepe Store. All rights reserved.</p>
+    </footer>
+
+    <!-- LOGIC GIỎ HÀNG THỜI GIAN THỰC -->
+    <script>
+        const productsDB = {
+            1: { name: "Bánh Gối Mẫn Mint (Hộp 6 chiếc)", price: 89000 },
+            2: { name: "Crepe Cuộn Lá Dứa Thanh Mát", price: 139000 },
+            3: { name: "Sầu Riêng Tan Chảy Khổng Lồ", price: 259000 },
+            4: { name: "Hộp Quà Thượng Hạng Mẫn Mint", price: 450000 }
+        };
+
+        let cart = {};
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            
+            if(sidebar.classList.contains('translate-x-full')) {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+            } else {
+                sidebar.classList.add('translate-x-full');
+                overlay.classList.remove('opacity-100');
+                setTimeout(() => overlay.classList.add('hidden'), 500);
+            }
+        }
+
+        function addToCart(id) {
+            if (cart[id]) {
+                cart[id].quantity += 1;
+            } else {
+                cart[id] = { ...productsDB[id], quantity: 1 };
+            }
+            updateCartUI();
+            
+            const badge = document.getElementById('cart-count');
+            badge.style.transform = 'scale(1.3)';
+            setTimeout(() => badge.style.transform = 'scale(1)', 200);
+        }
+
+        function updateQuantity(id, delta) {
+            if (!cart[id]) return;
+            cart[id].quantity += delta;
+            if (cart[id].quantity <= 0) {
+                delete cart[id];
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const itemsContainer = document.getElementById('cart-items');
+            const emptyMsg = document.getElementById('cart-empty-msg');
+            const countBadge = document.getElementById('cart-count');
+            const totalPriceEl = document.getElementById('cart-total-price');
+            
+            itemsContainer.innerHTML = '';
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            Object.keys(cart).forEach(id => {
+                const item = cart[id];
+                totalItems += item.quantity;
+                totalPrice += item.price * item.quantity;
+
+                const itemRow = document.createElement('div');
+                itemRow.className = "flex items-center justify-between border-b border-stone-100 pb-3.5 text-xs bg-stone-50/50 p-3 rounded-xl border border-stone-200/40 shadow-xs";
+                itemRow.innerHTML = `
+                    <div class="space-y-0.5 pr-2">
+                        <div class="font-bold text-stone-800">${item.name}</div>
+                        <div class="text-[#1e533e] font-extrabold">${(item.price).toLocaleString('vi-VN')}đ</div>
+                    </div>
+                    <div class="flex items-center gap-2.5 border border-stone-200 px-2.5 py-1 bg-white rounded-lg shadow-2xs">
+                        <button onclick="updateQuantity(${id}, -1)" class="hover:text-[#1e533e] font-black px-1 text-stone-400 hover:bg-stone-50 rounded cursor-pointer">-</button>
+                        <span class="font-bold text-stone-700 min-w-[14px] text-center">${item.quantity}</span>
+                        <button onclick="updateQuantity(${id}, 1)" class="hover:text-[#1e533e] font-black px-1 text-stone-400 hover:bg-stone-50 rounded cursor-pointer">+</button>
+                    </div>
+                `;
+                itemsContainer.appendChild(itemRow);
+            });
+
+            countBadge.innerText = totalItems;
+            totalPriceEl.innerText = totalPrice.toLocaleString('vi-VN') + 'đ';
+
+            if (totalItems === 0) {
+                itemsContainer.appendChild(emptyMsg);
+            }
+        }
+
+        function checkoutOrder() {
+            const name = document.getElementById('customer-name').value.trim();
+            const phone = document.getElementById('customer-phone').value.trim();
+
+            if (Object.keys(cart).length === 0) {
+                alert("🛒 Giỏ hàng của bạn đang trống!");
+                return;
+            }
+            if (!name || !phone) {
+                alert("📌 Vui lòng nhập Tên và Số điện thoại nhận bánh!");
+                return;
+            }
+
+            alert(`🎉 Xác nhận đơn hàng thành công!\nMẫn Mint Store đã tiếp nhận và sẽ gọi điện xác nhận đơn tới số ${phone} ngay.`);
+            cart = {};
+            document.getElementById('customer-name').value = '';
+            document.getElementById('customer-phone').value = '';
+            updateCartUI();
+            toggleCart();
+        }
+
+        // Tạo hiệu ứng thác đổ mượt mà khi load lưới sản phẩm
+        window.addEventListener('load', () => {
+            gsap.from('.product-card', {
+                opacity: 0,
+                y: 35,
+                stagger: 0.08,
+                duration: 0.9,
+                ease: 'power3.out'
+            });
+        });
+    </script>
+</body>
+</html>
